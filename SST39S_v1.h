@@ -62,15 +62,6 @@ void chipEraseDly(void);
 char softwareID(void);
 void softwareIDExit(void);
 
-volatile union uFloat{
-    float floatVal;
-    char floatCHAR[4];
-};
-
-volatile union uFloat{
-    float floatVal;
-    char floatCHAR[4];
-};
 
 volatile union uADDRESS{
     char adCHAR[2];
