@@ -9,20 +9,20 @@
 #include <stdlib.h>
 #include <delays.h>
 #include <p18cxxx.h>
-#include "SST39S.h"
+#include "SST39S_v1.h"
 
 
 
-volatile union uFloat HRV;
-volatile union uFloat glucose;
-volatile union uFloat HR;
-volatile union uFloat Temp;
-
-
-volatile union uFloat HRV_disp;
-volatile union uFloat glucose_disp;
-volatile union uFloat HR_disp;
-volatile union uFloat Temp_disp;
+//volatile union uFloat HRV;
+//volatile union uFloat glucose;
+//volatile union uFloat HR;
+//volatile union uFloat Temp;
+//
+//
+//volatile union uFloat HRV_disp;
+//volatile union uFloat glucose_disp;
+//volatile union uFloat HR_disp;
+//volatile union uFloat Temp_disp;
 
 union uCHAR RXbits;
 union uCHAR TXbitsADDR;
@@ -325,16 +325,16 @@ void readDATA(char sector, unsigned int ADDRESS)
 }
 
     
-volatile union uFloat HRV;
-volatile union uFloat glucose;
-volatile union uFloat HR;
-volatile union uFloat Temp;
-
-
-volatile union uFloat HRV_disp;
-volatile union uFloat glucose_disp;
-volatile union uFloat HR_disp;
-volatile union uFloat Temp_disp;
+//volatile union uFloat HRV;
+//volatile union uFloat glucose;
+//volatile union uFloat HR;
+//volatile union uFloat Temp;
+//
+//
+//volatile union uFloat HRV_disp;
+//volatile union uFloat glucose_disp;
+//volatile union uFloat HR_disp;
+//volatile union uFloat Temp_disp;
 
 char fives = 0x55;
 char tens = 0xAA;
