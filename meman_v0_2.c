@@ -293,7 +293,7 @@ void openRecordsFLOAT(unsigned char SECTOR, float* dispArr, volatile unsigned in
     records = *reccnt;
     for(x =0; x < 4; x++)
     {
-        dispArr[x] = 0xFFFF; 
+        dispArr[x] = 0xFFFFFFFF; 
     }
     
     if (records <= 0x04)
