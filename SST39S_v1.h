@@ -5,7 +5,7 @@
 #include <p18cxxx.h>
 
 
-#define DATAPIN_OUT PORTEbits.RE1
+/*#define DATAPIN_OUT PORTEbits.RE1
 #define DATAPIN_OUT_TRIS TRISEbits.RE1
 #define DATAPIN_IN PORTCbits.RC3
 #define DATAPIN_IN_TRIS TRISCbits.RC3
@@ -25,7 +25,30 @@
 #define OE_TRIS TRISDbits.RD3
 #define OE PORTDbits.RD3
 #define WE_TRIS TRISDbits.RD2
-#define WE PORTDbits.RD2
+#define WE PORTDbits.RD2*/
+
+
+#define DATAPIN_OUT PORTEbits.RE1 //PIN 9
+#define DATAPIN_OUT_TRIS TRISEbits.RE1 //PIN 9
+#define DATAPIN_IN PORTCbits.RC3 //PIN 18
+#define DATAPIN_IN_TRIS TRISCbits.RC3 //PIN 18
+#define DATAOE_TRIS TRISEbits.RE2 //PIN 2
+#define DATAOE PORTEbits.RE2 //PIN 2
+#define DATA_CLOCK PORTEbits.RE0 //PIN 8
+#define DATA_CLOCK_TRIS TRISEbits.RE0 //PIN 8
+#define ADDRESS_CLOCK PORTAbits.RA4 //PIN 6
+#define ADDRESS_CLOCK_TRIS TRISAbits.RA4 //PIN 6
+
+#define ADDRESSPIN_TRIS TRISAbits.RA5 //PIN 7  
+#define ADDRESSPIN_OUT PORTAbits.RA5 //PIN 7 
+
+#define S01 PORTCbits.RC0 //PIN 15
+#define S01_TRIS TRISCbits.RC0 //PIN 15
+
+#define OE_TRIS TRISBbits.RB6 //PIN 39
+#define OE PORTBbits.RB6 //PIN 39
+#define WE_TRIS TRISBbits.RB7 //PIN 40
+#define WE PORTBbits.RB7 //PIN 40
 
 #define SECTOR0 0x00
 #define SECTOR1 0x01
