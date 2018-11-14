@@ -82,19 +82,30 @@ void ram_init()
     OE_TRIS = 0;
     WE_TRIS = 0;
     WE = 1;
-    OE = 1;   
+    OE = 1;
+    Delay10TCYx(100);
 }
+
+//void strobeWE()
+//{
+//    TRISDbits.RD2 = 0;
+//    _asm 
+//    BSF PORTD , 2, 0
+//    NOP
+//    BCF PORTD , 2, 0
+//    NOP
+//    BSF PORTD , 2, 0
+//    _endasm
+//}
 
 void strobeWE()
 {
-    TRISDbits.RD2 = 0;
-    _asm 
-    BSF PORTD , 2, 0
-    NOP
-    BCF PORTD , 2, 0
-    NOP
-    BSF PORTD , 2, 0
-    _endasm
+    WE_TRIS = 0;
+    WE = 1;
+    Nop();
+    WE = 0;
+    Nop();
+    WE = 1;
 }
 
 void clearOE()
