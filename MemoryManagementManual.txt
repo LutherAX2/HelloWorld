@@ -1,0 +1,208 @@
+
+ save this as a C file for better visibility in a text editor like sublime text.
+  save this as a C file for better visibility in a text editor like sublime text.
+   save this as a C file for better visibility in a text editor like sublime text.
+    save this as a C file for better visibility in a text editor like sublime text.
+
+     save this as a C file for better visibility in a text editor like sublime text.                  :)
+
+
+#define HR_STORAGE_SECTOR 0x00 // Flash RAM HR storage secor
+#define HRV_STORAGE_SECTOR 0x02 // Flash RAM HRV storage secor
+#define TEMP_STORAGE_SECTOR 0x04 // Flash RAM temperature storage secor
+#define GLUC_STORAGE_SECTOR 0x06 // Flash RAM glucose storage secor
+
+#define INTSIZE 0x02 // size of integer dataype (bytes)
+#define FLOATSIZE 0x04 // size of integer dataype (bytes)
+
+#define SCROLL_UP  0xAA // use this as the second argument of scrollRecordsHR, scrollRecordsGLUC, scrollRecordsHRV, scrollRecordsGLUC to scroll up
+#define SCROLL_DOWN 0x55 // use this as the second argument of scrollRecordsHR, scrollRecordsGLUC, scrollRecordsHRV, scrollRecordsGLUC to scroll down
+
+#define TRACKING 0x0F // write this to tracking status adress in EEPROM if you want the associated values to be accounted for on reset
+#define NOT_TRACKING 0xF0 // write this to tracking status adress in EEPROM if you dont want the associated values to be accounted for on reset
+
+#define HR_TRACK_STATUS 0x02 // EEPROM ADDress to store the tracking status  for heartrate
+#define HR_MAX_STORE 0x04    // EEPROM Address to store user defined max values for heartrate
+#define HR_RCCNT 0x06        // EEPROM Address to store the number of values recorded for heartrate
+
+#define HRV_TRACK_STATUS 0x08  // EEPROM ADDress to store the tracking status  for heartrate variability
+#define HRV_MAX_STORE 0x0A  // EEPROM Address to store user defined max values for heartrate variability
+#define HRV_RCCNT 0x0C  // EEPROM Address to store the number of values recorded for heartrate variability
+
+#define TEMP_TRACK_STATUS 0x0E  // EEPROM ADDress to store the tracking status  for temperature
+#define TEMP_MAX_STORE 0x10  // EEPROM Address to store user defined max values for temperature
+#define TEMP_RCCNT 0x12  // EEPROM Address to store the number of values recorded for temperature
+
+#define GLUC_TRACK_STATUS 0x14  // EEPROM ADDress to store the tracking status  for glucose
+#define GLUC_MAX_STORE 0x16  // EEPROM Address to store user defined max values for glucose
+#define GLUC_RCCNT 0x18  // EEPROM Address to store the number of values recorded for glucose
+  
+
+// record count variables
+volatile unsigned char HRreccnt;
+volatile unsigned char HRVreccnt;
+volatile unsigned char TEMPreccnt;
+volatile unsigned char GLUCreccnt;
+
+// Max allowable records variables
+volatile unsigned char HRMaxRecords; 
+volatile unsigned char HRVMaxRecords; 
+volatile unsigned char TEMPMaxRecords;
+volatile unsigned char GLUCMaxRecords; 
+
+// Unions for measured data
+union uINT HR;
+union uFLOAT HRV;
+union uFLOAT TEMP;
+union uFLOAT GLUC;
+
+//write addresses stores the address of the next free space in flash RAM
+volatile unsigned int HRwriteAdd;
+volatile unsigned int HRVwriteAdd;
+volatile unsigned int TEMPwriteAdd;
+volatile unsigned int GLUCwriteAdd;
+
+//scrollRead limits stores the address of the first byte of the last written valeu in Flash Ram 
+volatile unsigned int HRreadAddX;
+volatile unsigned int HRVreadAddX;
+volatile unsigned int TEMPreadAddX;
+volatile unsigned int GLUCreadAddX;
+
+//scrollRead Pointers points to the value to scroll in
+volatile unsigned int HRreadAdd;
+volatile unsigned int HRVreadAdd;
+volatile unsigned int TEMPreadAdd;
+volatile unsigned int GLUCreadAdd;
+
+// scroll count so that the user knows what values are being viewed LCD should display something "3/45" where 3 is the scroll count, and 45 the number of readings currently srored
+volatile unsigned char HRscrollCnt;
+volatile unsigned char HRVscrollCnt;
+volatile unsigned char TEMPscrollCnt;
+volatile unsigned char GLUCscrollCnt;
+
+// display arrays
+float tempDisp[4] = {4.6, 5.5, 6.4, 5.5};
+float glucDisp[4] = {0.0, 0.0, 0.0, 0.0};
+float hrvDisp[4] = {0.0, 0.0, 0.0, 0.0};
+unsigned int hrDisp[4] = {28, 51, 55, 88};
+
+
+
+void eeprom_init(void);
+
+
+
+
+char readEEPROM(unsigned char);
+char readEEPROM(unsigned char ADDRESS)
+Arguments:
+
+
+
+void writeEEPROM(unsigned char, unsigned char);
+void writeEEPROM(unsigned char ADDRESS, unsigned char DATA)
+Arguments:
+
+
+void RecordTrackInit(unsigned char, unsigned char, unsigned char, unsigned char, volatile unsigned char*, volatile unsigned char* , volatile unsigned int* , volatile unsigned int*);
+void RecordTrackInit(unsigned char STATUS_ADDRESS, unsigned char MAX_STORE_ADDRESS, unsigned char RECCNT_ADDRESS, unsigned char TYPESIZE, 
+        volatile unsigned char* reccnt,volatile unsigned char* maxcnt, volatile unsigned int* writeadd, volatile unsigned int* scrollLimit)
+Arguments:
+
+STATUS_ADDRESS - EEPROM address where it is indicated that data was previously stored
+MAX_STORE_ADDRESS - EEPROM address where the user defined maximum number of value is stored
+RECCNT_ADDRESS - EEPROM address where number of values stored of a quanity is stored
+TYPESIZE - the size of the data in bytes that this call is refering to 
+reccnt - the address of the record counter vaiable e.g. HRreccnt
+maxcnt - the address of the variable used to hold the user defined maximum number of counts 0-256
+writeadd - the address of the integer vaiable used to store the flash RAM address of the next availible point for flash ram storage
+scrollLimit - the address of integer variable used to store the flash RAM address of the first byte of the last recording
+
+void MakeRecordHR(unsigned char,unsigned char,union uINT);
+void MakeRecordHR(unsigned char storeSECTOR, unsigned char RECCNT_ADDRESS, union uINT VALUE)
+Arguments:
+
+storeSECTOR - the storage sector for HR recods
+RECCNT_ADDRESS - the EEPROM storage address for the heart rate record count
+VALUE - uINT union used to store the heart rate
+
+
+void MakeRecordHRV(unsigned char,unsigned char,union uFLOAT);
+Arguments:
+storeSECTOR - the storage sector for HRV recods
+RECCNT_ADDRESS - the EEPROM storage address for the heart rate variablity record count
+VALUE - uFLOAT union used to store the heart rate variability
+
+
+void MakeRecordTEMP(unsigned char,unsigned char,union uFLOAT);
+Arguments:
+storeSECTOR - the storage sector for temperature recods
+RECCNT_ADDRESS - the EEPROM storage address for the temperature record count
+VALUE - uFLOAT union used to store the temperature
+
+
+void MakeRecordGLUC(unsigned char,unsigned char,union uFLOAT);
+Arguments:
+Arguments:
+storeSECTOR - the storage sector for glucose recods
+RECCNT_ADDRESS - the EEPROM storage address for the glucose record count
+VALUE - uFLOAT union used to store the glucose
+
+
+
+
+void openRecordsINT(unsigned char, unsigned int*, volatile unsigned int*, volatile unsigned char*, volatile unsigned char*);
+void openRecordsINT(unsigned char SECTOR, unsigned int* dispArr, volatile unsigned int* scrollreadAdd, volatile unsigned char* reccnt, volatile unsigned char* scrollcount)
+Arguments:
+SECTOR - the storage sector of the quantity for which this functionis being evoked
+dispArr - the display array name which will store the 4 values for display
+scrollreadAdd - the address of the integer value used to store the address we wish to scroll to
+reccnt - the address of the char value used to store the number of records made
+scrollcount - address of the char value which represents ordinal number of the last value fetched
+use this with HR
+
+void openRecordsFLOAT(unsigned char , float* , volatile unsigned int*, volatile unsigned char* , volatile unsigned char* );
+void openRecordsFLOAT(unsigned char SECTOR, float* dispArr, volatile unsigned int* scrollreadAdd, volatile unsigned char* reccnt, volatile unsigned char* scrollcount)
+Arguments:
+SECTOR - the storage sector of the quantity for which this functionis being evoked
+dispArr - the display array name which will store the 4 values for display
+scrollreadAdd - the address of the integer value used to store the address we wish to scroll to
+reccnt - the address of the char value used to store the number of records made
+scrollcount - address of the char value which represents ordinal number of the last value fetched
+
+void scrollRecordsHR(char , char , unsigned char );
+void scrollRecordsHR(char SECTOR, char message, unsigned char TYPESIZE)
+Arguments:
+SECTOR - storage sector for HR
+message - scroll command  (up or down)
+TYPESIZE - size of the data
+
+void scrollRecordsTEMP(char , char, unsigned char );
+void scrollRecordsHRV(char , char, unsigned char );
+void scrollRecordsGLUC(char, char, unsigned char );
+
+
+
+
+
+
+
+Examples
+
+void main (void)
+{
+    TRISB = 0x00;
+    ram_init(); // initialize ram pins always do this before anything
+    eeprom_init(); // initialize EECON1 always do this before anything
+
+    writeEEPROM(HR_TRACK_STATUS,TRACKING); 
+    writeEEPROM(HR_MAX_STORE, 0x08);
+    writeEEPROM(HR_RCCNT,0x03);  
+
+    RecordTrackInit(HR_TRACK_STATUS,HR_MAX_STORE,HR_RCCNT,INTSIZE,&HRreccnt,&HRMaxRecords,&HRwriteAdd, &HRreadAddX); //initialze variables information store in EEPROM
+    openRecordsINT(HR_STORAGE_SECTOR, hrDisp, &HRreadAdd, &HRreccnt, &HRscrollCnt); // call this when tranitioning to data view mode... it initializes display arrays to first values
+    scrollRecordsHR(HR_STORAGE_SECTOR, SCROLL_DOWN, INTSIZE); // this scrolling function is always called after  openRecordsINT(argumen1s associated with heart rate quantitiy)
+    MakeRecordHR(HR_STORAGE_SECTOR, HR_RCCNT, HR); // writes the integer value store in the union HR, to the correct address in its storgae sector, and writes the new record count to EEPROM
+    while(1);
+    
+}
