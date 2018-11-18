@@ -266,7 +266,7 @@ void openRecordsINT(unsigned char SECTOR, unsigned int* dispArr, volatile unsign
     else
     {
         nextreadADD = 0;
-        for(x = 0; x < records; x++)
+        for(x = 0; x < 4; x++)
         {
             for(y = 0; y < INTSIZE; y++)
             {
@@ -322,7 +322,7 @@ void openRecordsFLOAT(unsigned char SECTOR, float* dispArr, volatile unsigned in
     else
     {
         nextreadADD = 0;
-        for(x = 0; x < records; x++)
+        for(x = 0; x < 4; x++)
         {
             for(y = 0; y < FLOATSIZE; y++)
             {
