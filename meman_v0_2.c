@@ -172,60 +172,69 @@ void RecordTrackInit(unsigned char STATUS_ADDRESS, unsigned char MAX_STORE_ADDRE
 
 void MakeRecordHR(unsigned char storeSECTOR, unsigned char RECCNT_ADDRESS, union uINT VALUE)
 {
-    
-    int x;
-    for (x = 0; x < 2; x++)
+    if (HRreccnt < HRMaxRecords)
     {
-        writeDATA(storeSECTOR, HRwriteAdd, VALUE.intCHAR[x]);
-        HRwriteAdd = HRwriteAdd + 1; 
+        int x;
+        for (x = 0; x < 2; x++)
+        {
+            writeDATA(storeSECTOR, HRwriteAdd, VALUE.intCHAR[x]);
+            HRwriteAdd = HRwriteAdd + 1; 
+        }
+        
+        HRreccnt = HRreccnt + 1;
+        writeEEPROM(RECCNT_ADDRESS,HRreccnt);
+        HRreadAddX = HRwriteAdd - 2;
     }
-    
-    HRreccnt = HRreccnt + 1;
-    writeEEPROM(RECCNT_ADDRESS,HRreccnt);
-    HRreadAddX = HRwriteAdd - 2;
 }
 
 void MakeRecordHRV(unsigned char storeSECTOR, unsigned char RECCNT_ADDRESS, union uFLOAT VALUE)
 {
-    
-    int x;
-    for (x = 0; x < 4; x++)
+    if(HRVreccnt < HRVMaxRecords)
     {
-        writeDATA(storeSECTOR, HRVwriteAdd, VALUE.floatCHAR[x]);
-        HRVwriteAdd = HRVwriteAdd + 1; 
+        int x;
+        for (x = 0; x < 4; x++)
+        {
+            writeDATA(storeSECTOR, HRVwriteAdd, VALUE.floatCHAR[x]);
+            HRVwriteAdd = HRVwriteAdd + 1; 
+        }
+        HRVreccnt++;
+        writeEEPROM(RECCNT_ADDRESS,HRVreccnt);
+        HRVreadAddX = HRVwriteAdd - 4;
     }
-    HRVreccnt++;
-    writeEEPROM(RECCNT_ADDRESS,HRVreccnt);
-    HRVreadAddX = HRVwriteAdd - 4;
 }
 
 void MakeRecordTEMP(unsigned char storeSECTOR, unsigned char RECCNT_ADDRESS, union uFLOAT VALUE)
 {
-    
-    int x;
-    for (x = 0; x < 4; x++)
+    if (TEMPreccnt < TEMPMaxRecords)
     {
-        writeDATA(storeSECTOR, TEMPwriteAdd, VALUE.floatCHAR[x]);
-        TEMPwriteAdd = TEMPwriteAdd + 1; 
+        int x;
+        for (x = 0; x < 4; x++)
+        {
+            writeDATA(storeSECTOR, TEMPwriteAdd, VALUE.floatCHAR[x]);
+            TEMPwriteAdd = TEMPwriteAdd + 1; 
+        }
+        TEMPreccnt++;
+        writeEEPROM(RECCNT_ADDRESS,TEMPreccnt);
+        TEMPreadAddX = TEMPwriteAdd - 4;
     }
-    TEMPreccnt++;
-    writeEEPROM(RECCNT_ADDRESS,TEMPreccnt);
-    TEMPreadAddX = TEMPwriteAdd - 4;
 }
 
 void MakeRecordGLUC(unsigned char storeSECTOR, unsigned char RECCNT_ADDRESS, union uFLOAT VALUE)
 {
-    
-    int x;
-    for (x = 0; x < 4; x++)
+    if(GLUCreccnt < GLUCMaxRecords)
     {
-        writeDATA(storeSECTOR, GLUCwriteAdd, VALUE.floatCHAR[x]);
-        GLUCwriteAdd = GLUCwriteAdd + 1; 
+        int x;
+        for (x = 0; x < 4; x++)
+        {
+            writeDATA(storeSECTOR, GLUCwriteAdd, VALUE.floatCHAR[x]);
+            GLUCwriteAdd = GLUCwriteAdd + 1; 
+        }
+        GLUCreccnt++;
+        writeEEPROM(RECCNT_ADDRESS,GLUCreccnt);
+        GLUCreadAddX = GLUCwriteAdd - 4;
     }
-    GLUCreccnt++;
-    writeEEPROM(RECCNT_ADDRESS,GLUCreccnt);
-    GLUCreadAddX = GLUCwriteAdd - 4;
 }
+
 
 void openRecordsINT(unsigned char SECTOR, unsigned int* dispArr, volatile unsigned int* scrollreadAdd, volatile unsigned char* reccnt, volatile unsigned char* scrollcount)
 {
@@ -379,6 +388,10 @@ void scrollRecordsHR(char SECTOR, char message, unsigned char TYPESIZE) /* messa
         }
         HRscrollCnt++;
     }
+    else
+    {
+        return; // misra C 2004 rules 14.10 else if constructs shall be terminated with else
+    }
 }
     
 
@@ -426,6 +439,10 @@ void scrollRecordsTEMP(char SECTOR, char message, unsigned char TYPESIZE) /* mes
         }
         TEMPscrollCnt++;
     }
+    else
+    {
+        return; // misra C 2004 rules 14.10 else if constructs shall be terminated with else
+    }
 }
     
 void scrollRecordsHRV(char SECTOR, char message, unsigned char TYPESIZE) /* message this will be replaced with void*/
@@ -469,6 +486,10 @@ void scrollRecordsHRV(char SECTOR, char message, unsigned char TYPESIZE) /* mess
         }
         HRVscrollCnt++;
     }
+    else
+    {
+        return; // misra C 2004 rules 14.10 else if constructs shall be terminated with else
+    }
 }
     
 void scrollRecordsGLUC(char SECTOR, char message, unsigned char TYPESIZE) /* message this will be replaced with void*/
@@ -511,5 +532,9 @@ void scrollRecordsGLUC(char SECTOR, char message, unsigned char TYPESIZE) /* mes
             glucDisp[3] =  RXfloat.floatCHAR[x];            
         }
         GLUCscrollCnt++;
+    }
+    else
+    {
+        return; // misra C 2004 rules 14.10 else if constructs shall be terminated with else
     }
 }
