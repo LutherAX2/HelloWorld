@@ -206,3 +206,31 @@ void main (void)
     while(1);
     
 }
+
+
+RecordTrackInit(HR_TRACK_STATUS,HR_MAX_STORE,HR_RCCNT,INTSIZE,
+                &HRreccnt,&HRMaxRecords,&HRwriteAdd, &HRreadAddX)
+
+RecordTrackInit(HRV_TRACK_STATUS,HRV_MAX_STORE,HRV_RCCNT,FLOATSIZE,
+                &HRVreccnt,&HRVMaxRecords,&HRVwriteAdd, &HRVreadAddX)
+
+RecordTrackInit(TEMP_TRACK_STATUS,TEMP_MAX_STORE,TEMP_RCCNT,FLOATSIZE,
+                &TEMPreccnt,&TEMPMaxRecords,&TEMPwriteAdd, &TEMPreadAddX)
+
+RecordTrackInit(GLUC_TRACK_STATUS,GLUC_MAX_STORE,GLUC_RCCNT,FLOATSIZE,
+                &GLUCreccnt,&GLUCMaxRecords,&GLUCwriteAdd, &GLUCreadAddX)
+
+
+
+MakeRecordHR(HR_STORAGE_SECTOR, HR_RCCNT, HR)
+MakeRecordHR(HRV_STORAGE_SECTOR, HRV_RCCNT, HRV)
+MakeRecordHR(TEMP_STORAGE_SECTOR, TEMP_RCCNT, TEMP)
+MakeRecordHR(GLUC_STORAGE_SECTOR, GLUC_RCCNT, GLUC)
+
+
+openRecordsINT(HR_STORAGE_SECTOR, hrDisp, &HRreadAdd, &HRreccnt, &HRscrollCnt)
+scrollRecordsHR(HR_STORAGE_SECTOR, SCROLL_DOWN, INTSIZE);
+OR
+scrollRecordsHR(HR_STORAGE_SECTOR, SCROLL_UP, INTSIZE);
+
+https://sites.google.com/site/ecng3006201819/group-project-wiki/group-h-wiki/system-modules/flash-ram#FRDriver

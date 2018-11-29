@@ -7,10 +7,10 @@
 #define WRT7 0b10000000
 #define WRT8 0b00000000
 
-#define HR_TRACK_SECTOR  0x01 
-#define HRV_TRACK_SECTOR 0x03 
-#define TEMP_TRACK_SECTOR 0x05
-#define GLUC_TRACK_SECTOR 0x07 
+#define HR_TRACK_SECTOR  0x11 
+#define HRV_TRACK_SECTOR 0x23 
+#define TEMP_TRACK_SECTOR 0x35
+#define GLUC_TRACK_SECTOR 0x47 
 
 #define W0 0
 #define W1 1
@@ -124,5 +124,5 @@ void MaxFinder(unsigned char, unsigned int, unsigned char, unsigned char* );
 //  unsigned char *reccnt, union uFLOAT val)
 
 void MakeRecordFloat(unsigned char , unsigned int* ,unsigned int*,unsigned char, unsigned int, unsigned char* ,unsigned int*, unsigned char*, union uFLOAT);
-
+void MakeRecordInt(unsigned char , unsigned int* ,unsigned int*,unsigned char, unsigned int, unsigned char* ,unsigned int*, unsigned char*, union uINT);
 

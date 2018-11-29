@@ -61,9 +61,23 @@ void main (void)
     writeEEPROM(HR_MAX_STORE, 0x08);
     writeEEPROM(HR_RCCNT,0x03);  
     //meman_init();
+    HR.intVAL = 65;
     RecordTrackInit(HR_TRACK_STATUS,HR_MAX_STORE,HR_RCCNT,INTSIZE,&HRreccnt,&HRMaxRecords,&HRwriteAdd, &HRreadAddX);
     openRecordsINT(HR_STORAGE_SECTOR, hrDisp, &HRreadAdd, &HRreccnt, &HRscrollCnt);
     scrollRecordsHR(HR_STORAGE_SECTOR, SCROLL_DOWN, INTSIZE);
+    scrollRecordsHR(HR_STORAGE_SECTOR, SCROLL_DOWN, INTSIZE);
+    MakeRecordHR(HR_STORAGE_SECTOR, HR_RCCNT, HR);
+    MakeRecordHR(HR_STORAGE_SECTOR, HR_RCCNT, HR);
+    MakeRecordHR(HR_STORAGE_SECTOR, HR_RCCNT, HR);
+    MakeRecordHR(HR_STORAGE_SECTOR, HR_RCCNT, HR);
+    scrollRecordsHR(HR_STORAGE_SECTOR, SCROLL_DOWN, INTSIZE);
+    openRecordsINT(HR_STORAGE_SECTOR, hrDisp, &HRreadAdd, &HRreccnt, &HRscrollCnt);
+    scrollRecordsHR(HR_STORAGE_SECTOR, SCROLL_DOWN, INTSIZE);
+    scrollRecordsHR(HR_STORAGE_SECTOR, SCROLL_DOWN, INTSIZE);
+    scrollRecordsHR(HR_STORAGE_SECTOR, SCROLL_DOWN, INTSIZE);
+    scrollRecordsHR(HR_STORAGE_SECTOR, SCROLL_UP, INTSIZE);
+    scrollRecordsHR(HR_STORAGE_SECTOR, SCROLL_UP, INTSIZE);
+    
     while(1);
     
 }

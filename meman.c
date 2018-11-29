@@ -112,9 +112,7 @@ void MaxFinder(unsigned char SECTOR, unsigned int ADDRESS1, unsigned char maxRec
 
 void RecordTrack(unsigned char trackSECTOR, unsigned int trackAddress, unsigned char* offsetTRK, unsigned int *stateVAR)
 {
-    int temp;
-    temp = *stateVAR;
-    switch (temp){
+    switch (*stateVAR){
         case W0:
             writeDATA(trackSECTOR, (trackAddress + *offsetTRK), WRT1);
             *stateVAR = W1;
@@ -168,12 +166,28 @@ void MakeRecordFloat(unsigned char storeSECTOR, unsigned int* writeAddress, unsi
         unsigned char* offsetTRK, unsigned int *stateVAR,unsigned char *reccnt, union uFLOAT VALUE)
 {
     int x;
+    unsigned int* Y;
+    Y = stateVAR;
     for (x = 0; x < 4; x++)
     {
         writeDATA(storeSECTOR, *writeAddress, VALUE.floatCHAR[x]);
         *writeAddress = *writeAddress + 1; 
     }
-    RecordTrack(trackSECTOR, trackAddress, offsetTRK, stateVAR);
+    RecordTrack(trackSECTOR, trackAddress, offsetTRK, Y);
     *reccnt = *reccnt + 1;
     *scrollLimit = *writeAddress - 4;
+}
+
+void MakeRecordInt(unsigned char storeSECTOR, unsigned int* writeAddress, unsigned int* scrollLimit,unsigned char trackSECTOR, unsigned int trackAddress, 
+        unsigned char* offsetTRK, unsigned int *stateVAR,unsigned char *reccnt, union uINT VALUE)
+{
+    int x;
+    for (x = 0; x < 4; x++)
+    {
+        writeDATA(storeSECTOR, *writeAddress, VALUE.intCHAR[x]);
+        *writeAddress = *writeAddress + 1; 
+    }
+   RecordTrack(trackSECTOR, trackAddress, offsetTRK, stateVAR);
+    *reccnt = *reccnt + 1;
+    *scrollLimit = *writeAddress - 2;
 }
